@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f015c32debf6712409acaafaf6f554ce, type: 3}
+  m_Name: Goofy
+  m_EditorClassIdentifier: 
+  className: Osaka
+  classDescription: Does some silly things.
+  usableWeapons: -1
+  baseHealth: 40
+  baseMana: 50
+  baseAttribute:
+    strength: 20
+    dexterity: 30
+    intelligence: 40
+    constitution: 35
+    agility: 40
+    knowledge: 60
+  classSkills: []
+  Portraits:
+  - {fileID: 21300000, guid: e6d8219dc3fb21646a1e5168d1b7b855, type: 3}
