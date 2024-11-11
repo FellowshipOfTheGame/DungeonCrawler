@@ -53,9 +53,9 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
 
-            LoadDungeon("Assets/Scripts/Dungeon/dungeon.dat");
+            // LoadDungeon("Assets/Scripts/Dungeon/dungeon.dat");
 
-            /*dungeon[0, 0].HasFloor = true;
+            dungeon[0, 0].HasFloor = true;
             dungeon[0, 0].WallNorth = true;
             dungeon[0, 0].WallWest = true;
             dungeon[0, 0].WallSouth = true;
@@ -70,7 +70,7 @@ public class DungeonGenerator : MonoBehaviour
             dungeon[2, 2].HasSpecialFeature = true;
             dungeon[2, 2].SpecialFeature = DungeonCell.SpecialFeatureType.Trap;
             dungeon[2, 2].SpecialFeatureValue = 10;
-            dungeon[2, 1].SpecialFeatureValue = 100;*/
+            dungeon[2, 1].SpecialFeatureValue = 100;
         }
     }
 

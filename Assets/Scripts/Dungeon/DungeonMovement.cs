@@ -39,8 +39,7 @@ public class DungeonMovement : MonoBehaviour
     [SerializeField] private float transitionRotationSpeed;
     private Vector3 targetPosition;
     private Vector3 targetRotation;
-
-
+    private bool isSpecialFeatureChecked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -83,9 +82,14 @@ public class DungeonMovement : MonoBehaviour
             return;
         }
 
+        if (isSpecialFeatureChecked)
+        {
+            return;
+        }
+
         if (currentCell.HasSpecialFeature)
         {
-            if(currentCell.SpecialFeature == DungeonCell.SpecialFeatureType.None)
+            if (currentCell.SpecialFeature == DungeonCell.SpecialFeatureType.None)
             {
                 return;
             }
@@ -103,7 +107,8 @@ public class DungeonMovement : MonoBehaviour
                     print("Trap found!");
                     Trap trapComponent = cell.GetComponentInChildren<Trap>();
                     trapComponent.AddTrapToPlayer();
-                    if (!trapComponent.isActiveAndEnabled){
+                    if (!trapComponent.isActiveAndEnabled)
+                    {
                         print("Trap Destroyed!");
                         currentCell.SpecialFeature = DungeonCell.SpecialFeatureType.None;
                     }
@@ -118,17 +123,19 @@ public class DungeonMovement : MonoBehaviour
                     print("Special feature not recognized");
                     break;
             }
+
+            isSpecialFeatureChecked = true;
         }
     }
 
     private void CheckForRandomEncounters()
     {
-        if (canMove || hasCheckedForEncounter) 
-        { 
-            return; 
+        if (canMove || hasCheckedForEncounter)
+        {
+            return;
         }
 
-        if(currentCell.HasSpecialFeature)
+        if (currentCell.HasSpecialFeature)
         {
             return;
         }
@@ -136,14 +143,14 @@ public class DungeonMovement : MonoBehaviour
         hasCheckedForEncounter = true;
         currentSteps++;
 
-        if(currentSteps <= minStepsToEncounter)
+        if (currentSteps <= minStepsToEncounter)
         {
             return;
         }
 
         float encounterChance;
 
-        if(currentSteps >= maxStepsToEncounter)
+        if (currentSteps >= maxStepsToEncounter)
         {
             encounterChance = randomEncounterMaximumChance;
         }
@@ -189,7 +196,7 @@ public class DungeonMovement : MonoBehaviour
         nextPosY = currentPosY + dislocationY;
         DungeonCell dungeonCell = dungeonGenerator.GetCell(nextPosX, nextPosY);
 
-        if(dungeonCell == null)
+        if (dungeonCell == null)
         {
             print("Next cell (" + currentPosX + ", " + currentPosY + ") is empty");
         }
@@ -225,6 +232,7 @@ public class DungeonMovement : MonoBehaviour
         }
     }
 
+    bool isRotation = false;
     public void Movement()
     {
         MoveForwards();
@@ -234,23 +242,28 @@ public class DungeonMovement : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, transitionSpeed * Time.deltaTime);
             canMove = false;
-        } 
+            isRotation = false;
+        }
         else if (Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, targetRotation.y)) > float.Epsilon)
         {
             Vector3 newRotation = new(0, Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.y, transitionRotationSpeed * Time.deltaTime), 0);
             transform.eulerAngles = newRotation;
             canMove = false;
+            isRotation = true;
         }
-        else
+        else if (!canMove)
         {
             canMove = true;
+            if (!isRotation){
+                isSpecialFeatureChecked = false;
+            }
         }
 
     }
 
     public void MoveForwards()
     {
-        if(!canMove)
+        if (!canMove)
             return;
 
         if (!Input.GetKey(KeyCode.W))
@@ -293,7 +306,7 @@ public class DungeonMovement : MonoBehaviour
 
     public void Rotate()
     {
-        if(!canMove)
+        if (!canMove)
             return;
 
         bool rotated = false;
