@@ -1,3 +1,5 @@
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
@@ -26,7 +28,10 @@ public class DungeonGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            SaveDungeon("Assets/Scripts/Dungeon/dungeon.dat");
+        }
     }
 
     /*
@@ -48,7 +53,9 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
 
-            dungeon[0, 0].HasFloor = true;
+            LoadDungeon("Assets/Scripts/Dungeon/dungeon.dat");
+
+            /*dungeon[0, 0].HasFloor = true;
             dungeon[0, 0].WallNorth = true;
             dungeon[0, 0].WallWest = true;
             dungeon[0, 0].WallSouth = true;
@@ -63,6 +70,7 @@ public class DungeonGenerator : MonoBehaviour
             dungeon[2, 2].HasSpecialFeature = true;
             dungeon[2, 2].SpecialFeature = DungeonCell.SpecialFeatureType.Trap;
             dungeon[2, 2].SpecialFeatureValue = 10;
+            dungeon[2, 1].SpecialFeatureValue = 100;*/
         }
     }
 
@@ -206,5 +214,56 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         return dungeon[x, y];
+    }
+
+    // Salva a dungeon em um arquivo binario
+    public void SaveDungeon(string filePath)
+    {
+        BinaryFormatter formatter = new();
+        FileStream fileStream = new(filePath, FileMode.Create); // Criar / Sobrescrever
+
+        try
+        {
+            formatter.Serialize(fileStream, dungeon); // Serializa a dungeon
+            Debug.Log("Dungeon saved to " + filePath);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Failed to save dungeon: " + e.Message);
+        }
+        finally
+        {
+            fileStream.Close();
+        }
+    }
+
+    // Carrega a dungeon de um arquivo binario
+    public void LoadDungeon(string filePath)
+    {
+        if (!File.Exists(filePath)) // Verifica se o arquivo existe
+        {
+            Debug.LogError("Dungeon file not found: " + filePath);
+            return;
+        }
+
+        BinaryFormatter formatter = new();
+        FileStream fileStream = new(filePath, FileMode.Open); // Abre o arquivo
+
+        try
+        {
+            dungeon = (DungeonCell[,])formatter.Deserialize(fileStream);
+            Debug.Log("Dungeon loaded from " + filePath);
+            // Gera o Mapa
+            GenerateFloors(width, height);
+            GenerateWalls(width, height);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Failed to load dungeon: " + e.Message); 
+        }
+        finally
+        {
+            fileStream.Close();
+        }
     }
 }

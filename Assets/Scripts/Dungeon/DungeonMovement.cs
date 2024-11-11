@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DungeonMovement : MonoBehaviour
 {
@@ -155,6 +156,7 @@ public class DungeonMovement : MonoBehaviour
         {
             print("Random encounter!");
             currentSteps = 0;
+            SceneManager.LoadScene("Combat");
             // Start encounter
         }
     }
