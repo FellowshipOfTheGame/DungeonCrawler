@@ -4,5 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/DungeonExploration.unity
+    guid: 969d8a3908c93f141bd1d535b29a6fdc
+  - enabled: 1
+    path: Assets/Scenes/Combat.unity
+    guid: 6912b4fde3c7d6d4183493fe702ef9d0
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

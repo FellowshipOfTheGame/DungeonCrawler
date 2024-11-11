@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class DungeonMovement : MonoBehaviour
@@ -153,6 +154,7 @@ public class DungeonMovement : MonoBehaviour
         {
             print("Random encounter!");
             currentSteps = 0;
+            SceneManager.LoadScene("Combat");
             // Start encounter
         }
     }
