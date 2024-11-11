@@ -16,6 +16,5 @@ public class DungeonCell
     public bool WallWest { get; set; } = false;
     public bool HasSpecialFeature { get; set; } = false;
     public SpecialFeatureType SpecialFeature { get; set; } = SpecialFeatureType.None;
-
     public int SpecialFeatureValue { get; set; } = 0;
 }

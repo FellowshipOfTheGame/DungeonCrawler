@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class DungeonMovement : MonoBehaviour
 {
@@ -48,7 +44,7 @@ public class DungeonMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dungeonGenerator = FindObjectOfType<DungeonGenerator>();
+        dungeonGenerator = FindFirstObjectByType<DungeonGenerator>();
         SetStartingPosition(playerStartingPositionX, playerStartingPositionY);
     }
 
@@ -104,6 +100,12 @@ public class DungeonMovement : MonoBehaviour
                     break;
                 case DungeonCell.SpecialFeatureType.Trap:
                     print("Trap found!");
+                    Trap trapComponent = cell.GetComponentInChildren<Trap>();
+                    trapComponent.AddTrapToPlayer();
+                    if (!trapComponent.isActiveAndEnabled){
+                        print("Trap Destroyed!");
+                        currentCell.SpecialFeature = DungeonCell.SpecialFeatureType.None;
+                    }
                     break;
                 case DungeonCell.SpecialFeatureType.Entrance:
                     print("Entrance found!");

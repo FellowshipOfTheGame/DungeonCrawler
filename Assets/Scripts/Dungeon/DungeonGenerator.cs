@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
@@ -15,6 +13,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private GameObject dungeonParent;
 
     [SerializeField] private GameObject treasurePrefab;
+    [SerializeField] private GameObject trapPrefab;
 
     // Start is called before the first frame update
     void Awake()
@@ -54,12 +53,16 @@ public class DungeonGenerator : MonoBehaviour
             dungeon[0, 0].WallWest = true;
             dungeon[0, 0].WallSouth = true;
             dungeon[1, 0].HasFloor = true;
-            dungeon[2, 0].HasFloor = true;
             dungeon[1, 1].HasFloor = true;
+            dungeon[2, 0].HasFloor = true;
             dungeon[2, 1].HasFloor = true;
             dungeon[2, 1].HasSpecialFeature = true;
             dungeon[2, 1].SpecialFeature = DungeonCell.SpecialFeatureType.Treasure;
             dungeon[2, 1].SpecialFeatureValue = 100;
+            dungeon[2, 2].HasFloor = true;
+            dungeon[2, 2].HasSpecialFeature = true;
+            dungeon[2, 2].SpecialFeature = DungeonCell.SpecialFeatureType.Trap;
+            dungeon[2, 2].SpecialFeatureValue = 10;
         }
     }
 
@@ -168,11 +171,14 @@ public class DungeonGenerator : MonoBehaviour
             case DungeonCell.SpecialFeatureType.Treasure:
                 Instantiate(treasurePrefab, position, rotation, generatedDungeonCell.transform);
                 Treasure treasureComponent = treasurePrefab.GetComponent<Treasure>();
-                treasureComponent.setValue(dungeon[x, y].SpecialFeatureValue);
+                treasureComponent.SetValue(dungeon[x, y].SpecialFeatureValue);
                 treasureComponent.treasureType = Treasure.TreasureType.Money;
                 break;
             case DungeonCell.SpecialFeatureType.Trap:
-                // Instantiate trap with the correct rotation
+                Instantiate(trapPrefab, position, rotation, generatedDungeonCell.transform);
+                Trap trapComponent = trapPrefab.GetComponent<Trap>();
+                trapComponent.SetValue(dungeon[x, y].SpecialFeatureValue);
+                trapComponent.trapType = Trap.TrapType.Damage;
                 break;
             case DungeonCell.SpecialFeatureType.Entrance:
                 // Instantiate entrance with the correct rotation

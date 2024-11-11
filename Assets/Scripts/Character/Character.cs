@@ -1,7 +1,5 @@
 using System;
-using UnityEditor.UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [System.Serializable] 
 public struct Attributes:ICloneable
@@ -23,7 +21,7 @@ public struct Attributes:ICloneable
 [Serializable]
 public class Character
 {
-    public String CharacterName;
+    public string CharacterName;
     
     public int Health, MaxHealth;
     public int Mana, MaxMana;
@@ -64,7 +62,7 @@ public class Character
         }
     }
 
-    public String GetClassName() => CharacterClass.className;
+    public string GetClassName() => CharacterClass.className;
     
     public bool initialized = false;
     public void Initialize()
