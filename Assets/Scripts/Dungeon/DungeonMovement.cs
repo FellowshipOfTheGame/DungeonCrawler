@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -113,10 +114,16 @@ public class DungeonMovement : MonoBehaviour
                         currentCell.SpecialFeature = DungeonCell.SpecialFeatureType.None;
                     }
                     break;
-                case DungeonCell.SpecialFeatureType.Entrance:
-                    print("Entrance found!");
+                case DungeonCell.SpecialFeatureType.StairDown:
+                    print("Stair down");
+                    // Get the map with Map id
+                    int id = currentCell.SpecialFeatureValue;
+                    string path = MapID.GetMapPath(id);
+                    // Load the map
+                    dungeonGenerator.UnloadDungeon();
+                    dungeonGenerator.LoadDungeon(path);
                     break;
-                case DungeonCell.SpecialFeatureType.Exit:
+                case DungeonCell.SpecialFeatureType.StairUp:
                     print("Exit found!");
                     break;
                 default:

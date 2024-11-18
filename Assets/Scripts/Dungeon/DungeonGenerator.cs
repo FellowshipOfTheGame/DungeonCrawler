@@ -16,6 +16,7 @@ public class DungeonGenerator : MonoBehaviour
 
     [SerializeField] private GameObject treasurePrefab;
     [SerializeField] private GameObject trapPrefab;
+    [SerializeField] private GameObject stairDownPrefab;
 
     // Start is called before the first frame update
     void Awake()
@@ -28,7 +29,7 @@ public class DungeonGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.U))
+        if (Input.GetKeyDown(KeyCode.U))
         {
             SaveDungeon("Assets/Scripts/Dungeon/dungeon.dat");
         }
@@ -53,9 +54,9 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
 
-            // LoadDungeon("Assets/Scripts/Dungeon/dungeon.dat");
+            LoadDungeon("Assets/Scripts/Dungeon/dungeon2.dat");
 
-            dungeon[0, 0].HasFloor = true;
+            /*dungeon[0, 0].HasFloor = true;
             dungeon[0, 0].WallNorth = true;
             dungeon[0, 0].WallWest = true;
             dungeon[0, 0].WallSouth = true;
@@ -63,6 +64,7 @@ public class DungeonGenerator : MonoBehaviour
             dungeon[1, 1].HasFloor = true;
             dungeon[2, 0].HasFloor = true;
             dungeon[2, 1].HasFloor = true;
+            dungeon[2, 2].HasFloor = true;
             dungeon[2, 1].HasSpecialFeature = true;
             dungeon[2, 1].SpecialFeature = DungeonCell.SpecialFeatureType.Treasure;
             dungeon[2, 1].SpecialFeatureValue = 100;
@@ -70,7 +72,12 @@ public class DungeonGenerator : MonoBehaviour
             dungeon[2, 2].HasSpecialFeature = true;
             dungeon[2, 2].SpecialFeature = DungeonCell.SpecialFeatureType.Trap;
             dungeon[2, 2].SpecialFeatureValue = 10;
-            dungeon[2, 1].SpecialFeatureValue = 100;
+            dungeon[2, 1].SpecialFeatureValue = 100;*/
+
+            dungeon[1, 0].SpecialFeature = DungeonCell.SpecialFeatureType.StairDown;
+            dungeon[1, 0].HasSpecialFeature = true;
+            dungeon[1, 0].HasFloor = true;
+            dungeon[1, 0].SpecialFeatureValue = 0;
         }
     }
 
@@ -83,7 +90,7 @@ public class DungeonGenerator : MonoBehaviour
             {
                 DungeonCell cell = dungeon[x, y];
 
-                if(!cell.HasFloor)
+                if (!cell.HasFloor)
                 {
                     continue;
                 }
@@ -188,8 +195,11 @@ public class DungeonGenerator : MonoBehaviour
                 trapComponent.SetValue(dungeon[x, y].SpecialFeatureValue);
                 trapComponent.trapType = Trap.TrapType.Damage;
                 break;
-            case DungeonCell.SpecialFeatureType.Entrance:
-                // Instantiate entrance with the correct rotation
+            case DungeonCell.SpecialFeatureType.StairUp:
+                // Instantiate stair with the correct rotation
+                break;
+            case DungeonCell.SpecialFeatureType.StairDown:
+                Instantiate(stairDownPrefab, position, rotation, generatedDungeonCell.transform);
                 break;
             case DungeonCell.SpecialFeatureType.Exit:
                 // Instantiate exit with the correct rotation
@@ -203,7 +213,7 @@ public class DungeonGenerator : MonoBehaviour
     public DungeonCell GetCell(int x, int y)
     {
         if (x < 0 || y < 0)
-        { 
+        {
             print("Cell (" + x + ", " + y + ") is out of bounds");
             return null;
         }
@@ -259,11 +269,21 @@ public class DungeonGenerator : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to load dungeon: " + e.Message); 
+            Debug.LogError("Failed to load dungeon: " + e.Message);
         }
         finally
         {
             fileStream.Close();
         }
+    }
+
+    public void UnloadDungeon()
+    {
+        foreach (Transform child in dungeonParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        dungeon = null;
     }
 }

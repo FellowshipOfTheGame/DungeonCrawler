@@ -4,8 +4,10 @@ public class DungeonCell
     public enum SpecialFeatureType
     {
         None,
-        Entrance,
+        StairUp,
+        StairDown,
         Exit,
+        Entrance,
         Treasure,
         Trap,
     }
