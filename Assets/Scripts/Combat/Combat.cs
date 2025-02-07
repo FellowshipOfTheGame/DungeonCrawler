@@ -3,23 +3,58 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CombatAction;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Combat : MonoBehaviour
 {
     private static Combat _instance;
     public PlayerSave save;
-    public List<Character> Heroes;
-    public List<Character> Enemies;
-
-    public List<testCharacterLoader> heroPortraits;
     
-    public void OnEnable()
+    public List<Character> heroes;
+    public List<Character> enemies;
+    
+    [SerializeField] private List<HeroPortrait> heroPortraits;
+    [SerializeField] private GameObject enemyRoot;
+    
+    [SerializeField] private EnemyLayoutLoader enemyLayoutLoader;
+    
+    //TODO complete
+    public void LoadEncounter(Encounter encounter)
+    {
+        print("Loading eNCONTUER");
+        
+        //Delete previous enemy portraits
+        while (enemyRoot.transform.childCount > 0)
+            DestroyImmediate(enemyRoot.transform.GetChild(0).gameObject);
+        
+        enemies.Clear();
+        //Load Enemies List
+
+        foreach (var encounterPosition in encounter.Formation)
+        {
+            var enemy = encounterPosition.Enemy;
+            enemies.Add(enemy);
+            print(enemy.GetClassName());
+            
+            var enemyObject = new GameObject(enemy.GetClassName());
+            enemyObject.transform.SetParent(enemyRoot.transform);
+            enemyObject.transform.position = enemyLayoutLoader.GetPosition(encounterPosition.Position);
+            
+            var enemyScript = enemyObject.AddComponent<Enemy>();
+            enemyScript.Init(enemy);
+        }
+    } 
+    
+    
+    public void Awake()
     {
         _instance = this;
-        Heroes = save.GetHeroes();
-        for (int i = 0; i < Heroes.Count; i++)
-            heroPortraits[i].Setup(Heroes[i]);
+        
+        heroes = save.GetHeroes();
+        
+        for (int i = 0; i < heroes.Count; i++)
+            heroPortraits[i].Setup(heroes[i]);
 
         StartCoroutine(TurnCoroutine());
     }
@@ -30,111 +65,97 @@ public class Combat : MonoBehaviour
             //Wait for all Heroes to take action
             yield return new WaitWhile
             (() => 
-                Heroes.Count(c => c.IsAlive)-1 > CharacterActions.Count()
+                heroes.Count(c => c.IsAlive) > characterActions.Count()
             );
             
             //TODO Enemy Actions :D
-            
-            
             ExecuteActions();
         }
     }
 
     public static Combat GetInstance()
     {
-        if (_instance == null) throw new Exception("Uninstantiated combat reference.");
+        if (_instance.IsUnityNull()) 
+            throw new Exception("Uninstantiated combat reference.");
         return _instance;
     }
 
     public int Attack(Character attacker, Character target)
     {
-        //TODO Change for something interesting
         int damage = attacker.BaseDamage;
         int defense = target.BaseDefense;
-        int dealt_damage = Math.Max(attacker.BaseDamage - target.BaseDefense, 0);
-        target.ReceiveDamage(dealt_damage);
-        return dealt_damage;
+        
+        int damageDealt = Math.Max(attacker.BaseDamage - target.BaseDefense, 0);
+        
+        target.ReceiveDamage(damageDealt);
+        return damageDealt;
     }
     
-    //Todo Rename to toggle
-    public void OpenActionMenu(testCharacterLoader target)
-    {
-        CloseActionMenus();
-        target.ActionMenu.SetActive(!target.ActionMenu.activeSelf);
-    }
-
-    public void CloseActionMenus()
-    {
-        heroPortraits.ForEach(p =>p.ActionMenu.SetActive(false));
-    }
-
     #region ActionDeclaration
-        private Dictionary<Character,CombatAction.CombatAction> CharacterActions = 
+        private Dictionary<Character,CombatAction.CombatAction> characterActions = 
             new Dictionary<Character, CombatAction.CombatAction>();
 
         public void ExecuteActions()
         {
-            foreach (var character in CharacterActions.Keys)
-                CharacterActions[character].Do(character);
+            foreach (var character in characterActions.Keys)
+                characterActions[character].Do(character);
             
             //remove defense, TODO rethink approach, maybe
-            foreach (var character in CharacterActions.Keys)
+            foreach (var character in characterActions.Keys)
             {
                 character.IsDefending = false;
                 character.IsActionAssigned = false;
             }
 
              
-            CharacterActions.Clear(); ;
+            characterActions.Clear(); ;
         }
 
         private enum ActionDeclaration
-        { None, Attack, Skill, Item, DefendSelf, Escape}
+        { None, Attack, Skill, Defend, Escape}
         
         //Used for keeping control of the action declaration of a player character
         //E.g. Selecting an enemy after choosing the attack option
-        private ActionDeclaration _partialActionType;
-        private Character _currentCharacter;
-        private CombatAction.CombatAction _currentAction;
+        private ActionDeclaration partialActionType;
+        private Character currentCharacter;
+        private CombatAction.CombatAction currentAction;
 
         private void ResetPartialAction()
         {
-            _partialActionType = ActionDeclaration.None;
-            _currentCharacter = null;
-            _currentAction = null;
+            partialActionType = ActionDeclaration.None;
+            currentCharacter = null;
+            currentAction = null;
         }
 
-        public void BeginAttackDeclaration(testCharacterLoader attacker)
+        public void BeginAttackDeclaration(Character attacker)
         {
-            _currentCharacter = attacker.character;
-            _partialActionType = ActionDeclaration.Attack;
-            var temp = new CombatAction.Attack();
-            _currentAction = temp;
+            partialActionType = ActionDeclaration.Attack;
+            var temp = new Attack();
+            currentCharacter = attacker;
+            currentAction = temp;
         }
 
-        public void AttributeTargetToAttack(testCharacterLoader target)
+        public void AttributeTargetToAttack(Character target)
         {
-            if (_partialActionType != ActionDeclaration.Attack ||
-                _currentAction == null) return;
+            if (partialActionType != ActionDeclaration.Attack ||
+                currentAction == null) return;
 
-            var action = (_currentAction as CombatAction.Attack);
-            action.Target = target.character;
-            CharacterActions[_currentCharacter] = _currentAction;
+            var action = (currentAction as Attack);
+            action.Target = target;
+            characterActions[currentCharacter] = currentAction;
 
-            Debug.Log($"{_currentCharacter.CharacterName} will attack {target.character.CharacterName}");
+            Debug.Log($"{currentCharacter.characterName} will attack {target.characterName}");
             
-            _currentCharacter.IsActionAssigned = true;
+            currentCharacter.IsActionAssigned = true;
             ResetPartialAction();
-            CloseActionMenus();
         }
 
-        public void DefendDeclaration(testCharacterLoader defender)
+        public void DefendDeclaration(Character defender)
         {
-            CombatAction.Defend defend = new Defend();
-            CharacterActions[defender.character] = defend;
-            CloseActionMenus();
-            defender.character.IsActionAssigned = true;
+            Defend defend = new Defend();
+            characterActions[defender] = defend;
+            defender.IsActionAssigned = true;
+            Debug.Log($"{defender.characterName} will defend!");
         }
-
         #endregion
 }

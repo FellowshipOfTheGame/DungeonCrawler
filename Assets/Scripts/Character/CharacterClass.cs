@@ -7,8 +7,6 @@ public class CharacterClass : ScriptableObject
     public string className;
     public string classDescription;
     
-    public UsableWeapons usableWeapons;
-
     public int baseHealth, baseMana;
     public Attributes baseAttribute;
     

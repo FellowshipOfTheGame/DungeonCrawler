@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class testCharacterLoader : MonoBehaviour
+public class HeroPortrait : MonoBehaviour
 {
     [HideInInspector]public Character character;
     
@@ -15,37 +15,32 @@ public class testCharacterLoader : MonoBehaviour
     public TextMeshProUGUI characterClassName;
     public TextMeshProUGUI characterLevel;
     
-    public Slider _sliderHealth;
-    public Slider _sliderMana;
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI manaText;
 
     public Image portraitImage;
-    public GameObject ActionMenu;
     
     public GameObject shieldIcon;
     public GameObject actionIndicator;
-    public void Setup(Character character)
+
+    public void Setup(Character hero)
     {
-        this.character = character;
+        character = hero;
         if(!character.initialized) character.Initialize();
         LoadCharacter();
         character.OnChange += LoadCharacter;
     }
 
-    void OnDisable()
-    {
-        character.OnChange -= LoadCharacter;    
-    }
+    void OnDisable() =>
+        character.OnChange -= LoadCharacter;   
 
     void LoadCharacter()
     {
-        characterName.text = character.CharacterName;
-        characterClassName.text = character.GetClassName();
-        characterLevel.text = character.Level.ToString();
-        
-        _sliderHealth.value = (float)character.Health/character.MaxHealth;
-        _sliderMana.value = (float)character.Mana/character.MaxMana;
-        
         portraitImage.sprite = character.GetImage();
+        
+        healthText.text = $"{character.health}/{character.maxHealth}";
+        manaText.text = $"{character.mana}/{character.maxMana}";
+        
         shieldIcon.SetActive(character.IsDefending);
         actionIndicator.SetActive(character.IsActionAssigned);
     }
