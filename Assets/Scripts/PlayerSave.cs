@@ -8,7 +8,6 @@ using UnityEngine.Assertions;
 public class PlayerSave : MonoBehaviour
 {
     public List<Character> heroes;
-    public List<Item> inventory;
 
     private void Start()
     {

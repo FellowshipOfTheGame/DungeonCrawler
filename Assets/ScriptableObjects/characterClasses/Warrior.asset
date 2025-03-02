@@ -24,6 +24,8 @@ MonoBehaviour:
     constitution: 50
     agility: 50
     knowledge: 20
-  classSkills: []
+  classSkills:
+  - {fileID: 11400000, guid: dd1f15dc29a947c428f9c8f48e59b27d, type: 2}
+  - {fileID: 11400000, guid: b039dcb29f7db8a4db718bf9e2c2ff4c, type: 2}
   Portraits:
   - {fileID: 21300000, guid: f9940304c34617648a151b2723b96c4b, type: 3}

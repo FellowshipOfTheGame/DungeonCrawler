@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -23,72 +24,74 @@ public struct Attributes:ICloneable
 [Serializable]
 public class Character
 {
-    public String CharacterName;
+    public String characterName;
     
-    public int Health, MaxHealth;
-    public int Mana, MaxMana;
+    public int health, maxHealth;
+    public int mana, maxMana;
 
-    public bool IsAlive => Health > 0; // TODO think about it
+    public bool IsAlive => health > 0; // TODO think about it
     
-    public int Level;
+    public int level;
     public void LevelUp() => throw new NotImplementedException();
 
-    public CharacterClass CharacterClass;
+    public CharacterClass characterClass;
     public int classPortraitIndex;
     
-    public Attributes Attributes;
+    public Attributes attributes;
     
-    public delegate void CharacterUpdate();
-    public event CharacterUpdate OnChange;
+    public event Action OnChange;
 
-    public Weapon weapon;
-    public int BaseDamage => (weapon != null)?(Attributes.strength+weapon.damage):(Attributes.strength);
-    public int BaseDefense => 0;
+    public int BaseDamage => attributes.strength;
+    public int BaseDefense => 0;//Todo IDK
     
     
-    private bool _actionAssigned = false;
+    private bool actionAssigned = false;
     public bool IsActionAssigned
     {
-        get => _actionAssigned;
+        get => actionAssigned;
         set {
-            _actionAssigned = value;
+            actionAssigned = value;
             OnChange?.Invoke();
         }
     }
-    private bool _isDefending = false;
+    
+    private bool isDefending = false;
     public bool IsDefending 
-    { get => _isDefending;
+    { get => isDefending;
         set { 
-            _isDefending = value;
+            isDefending = value;
             OnChange?.Invoke();
         }
     }
 
-    public String GetClassName() => CharacterClass.className;
+    public String GetClassName() => 
+        characterClass.className;
     
     public bool initialized = false;
     public void Initialize()
     {
-        MaxHealth = CharacterClass.baseHealth;
-        Health = MaxHealth;
-        MaxMana = CharacterClass.baseMana;
-        Mana = MaxMana;
+        maxHealth = characterClass.baseHealth;
+        health = maxHealth;
+        maxMana = characterClass.baseMana;
+        mana = maxMana;
 
-        Level = 1;
+        level = 1;
         
-        Attributes = (Attributes)CharacterClass.baseAttribute.Clone();
+        attributes = (Attributes)characterClass.baseAttribute.Clone();
         initialized = true;
     }
 
     public void ReceiveDamage(int damage)
     {
-        Health -= damage;
-        Health = Math.Max(Health, 0);
+        health -= damage;
+        health = Math.Max(health, 0);
         
         OnChange?.Invoke();
     }
 
-    public Sprite GetImage() {
-        return CharacterClass.Portraits[classPortraitIndex];
-    }
+    public Sprite GetImage() =>
+        characterClass.Portraits[classPortraitIndex];
+
+    public List<Skill> GetSkills() => 
+        characterClass.classSkills;
 }

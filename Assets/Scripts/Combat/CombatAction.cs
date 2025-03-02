@@ -19,12 +19,6 @@ namespace CombatAction
         public override void Do(Character user)
         {
             int damage = Combat.GetInstance().Attack(user, Target);
-            this.Debug(user,damage);
-        }
-
-        public void Debug(Character user,int damage)
-        {
-            UnityEngine.Debug.Log($"{user} attacks {Target}, dealing {damage} damage!");
         }
     }
     
@@ -40,8 +34,10 @@ namespace CombatAction
 
     public class Defend : CombatAction
     {
-        public override void Do(Character user) =>
+        public override void Do(Character user)
+        {
             user.IsDefending = true;
+        }
     }
 
     public class Escape : CombatAction
