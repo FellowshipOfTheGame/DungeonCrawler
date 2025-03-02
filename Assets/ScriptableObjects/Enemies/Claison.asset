@@ -17,7 +17,7 @@ MonoBehaviour:
   baseHealth: 120
   baseMana: 10
   baseAttribute:
-    strength: 0
+    strength: 55
     dexterity: 0
     intelligence: 0
     constitution: 0

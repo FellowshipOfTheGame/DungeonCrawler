@@ -27,5 +27,7 @@ public class Enemy : MonoBehaviour
         //Image Setup
         var image = gameObject.AddComponent<Image>();
         image.sprite = character.characterClass.Portraits[0];
+
+        character.Initialize();
     }
 }

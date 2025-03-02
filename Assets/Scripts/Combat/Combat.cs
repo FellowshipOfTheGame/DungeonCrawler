@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CombatAction;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Combat : MonoBehaviour
@@ -67,8 +68,12 @@ public class Combat : MonoBehaviour
             (() => 
                 heroes.Count(c => c.IsAlive) > characterActions.Count()
             );
+           
             
-            //TODO Enemy Actions :D
+            
+            //ENEMIES ATTACK AT RANDOM
+            EnemyCombatAI.Foo(this);
+            
             ExecuteActions();
         }
     }
