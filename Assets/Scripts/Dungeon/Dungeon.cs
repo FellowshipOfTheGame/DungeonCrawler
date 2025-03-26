@@ -13,7 +13,7 @@ public class Dungeon : MonoBehaviour
     
     public void LoadFromDungeonEditor()
     {
-        map = dungeonEditor.map;
+        map = dungeonEditor.Map;
         
         sizeX = dungeonEditor.x;
         sizeY = dungeonEditor.y; 
