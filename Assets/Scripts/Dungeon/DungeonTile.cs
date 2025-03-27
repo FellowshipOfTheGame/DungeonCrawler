@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class DungeonTile
 {
-    [Flags] //Pra ficar bonito no inspector da unity
+    [Flags] //Pra ficar bonito no inspector da unity, e depois atrapalhar a vida :D
     public enum Side {
         North = 1, East = 1 << 1, South = 1 << 2, West = 1 << 3
     }
