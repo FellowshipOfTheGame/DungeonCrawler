@@ -1,0 +1,68 @@
+{
+    "FirstFloor": {
+        "Enemies": [
+            {
+                "CharacterName": "Goblin",
+                "MaxHealth": 10,
+                "MaxMana": 0,
+                "Attributes": {
+                    "strength": 2,
+                    "dexterity": 2,
+                    "intelligence": 2,
+                    "constitution": 2,
+                    "agility": 2,
+                    "knowledge": 0
+                }
+            },
+            {
+                "CharacterName": "Orc",
+                "MaxHealth": 15,
+                "MaxMana": 0,
+                "Attributes": {
+                    "strength": 3,
+                    "dexterity": 3,
+                    "intelligence": 3,
+                    "constitution": 3,
+                    "agility": 3,
+                    "knowledge": 0
+                }
+            },
+            {
+                "CharacterName": "Troll",
+                "MaxHealth": 20,
+                "MaxMana": 0,
+                "Attributes": {
+                    "strength": 4,
+                    "dexterity": 4,
+                    "intelligence": 4,
+                    "constitution": 4,
+                    "agility": 4,
+                    "knowledge": 0
+                }
+            }
+        ],
+        "Encounters": [
+            {
+                "Enemies": [
+                    "Goblin",
+                    "Goblin",
+                    "Goblin"
+                ],
+                "Chance": 0.5
+            },
+            {
+                "Enemies": [
+                    "Orc",
+                    "Orc"
+                ],
+                "Chance": 0.3
+            },
+            {
+                "Enemies": [
+                    "Troll"
+                ],
+                "Chance": 0.2
+            }
+        ]
+    }
+}

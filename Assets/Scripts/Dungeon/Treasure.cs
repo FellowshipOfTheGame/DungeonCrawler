@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Treasure : MonoBehaviour
@@ -16,10 +14,10 @@ public class Treasure : MonoBehaviour
 
     private void Start()
     {
-        moneyManager = FindObjectOfType<MoneyManager>();
+        moneyManager = FindFirstObjectByType<MoneyManager>();
     }
 
-    public void setValue(int newValue)
+    public void SetValue(int newValue)
     {
         value = newValue;
         print("Value set to: " + value);
