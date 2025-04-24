@@ -282,7 +282,7 @@ MonoBehaviour:
   wallPrefab: {fileID: 8384023909336270348, guid: acbed8404bee18e43b5c86e1b9dca0c0, type: 3}
   dungeonParent: {fileID: 429146979}
   treasurePrefab: {fileID: 2086185410139436414, guid: a42a01be34db96a4287ead99a7f189ae, type: 3}
-  trapPrefab: {fileID: 0}
+  trapPrefab: {fileID: 2086185410139436414, guid: ed6e72db83af49a7ba933db4022c937d, type: 3}
   stairDownPrefab: {fileID: 7980107322030030359, guid: 70d56d029bb397b4a993d39d9af77248, type: 3}
 --- !u!4 &873497837
 Transform:
@@ -401,7 +401,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1753168117}
   - component: {fileID: 1753168119}
-  - component: {fileID: 1753168118}
+  - component: {fileID: 1753168120}
   m_Layer: 0
   m_Name: InventoryManager
   m_TagString: Untagged
@@ -424,18 +424,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1753168118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753168116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ba81fd9fbe73cb41bc69a63f4aff008, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1753168119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,6 +434,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a06fe2c5fc4c4e418a3a28d2a75230e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1753168120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753168116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea8ce80b3401c94eb47f75748d484c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1766437064

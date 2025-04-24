@@ -19,7 +19,8 @@ public class MapID
     private static Dictionary<int, string> mapID = new Dictionary<int, string>
     {
         { 0, "Assets/Scripts/Dungeon/dungeon.dat" },
-        { 1, "Assets/Scripts/Dungeon/dungeon2.dat" }
+        { 1, "Assets/Scripts/Dungeon/dungeon2.dat" },
+        { 2, "Assets/Scripts/Dungeon/dungeon3.dat" }
     };
 
     public static string GetMapPath(int id)
