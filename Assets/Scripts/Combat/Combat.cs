@@ -95,6 +95,111 @@ public class Combat : MonoBehaviour
         target.ReceiveDamage(damageDealt);
         return damageDealt;
     }
+
+    public (float, int) NewAttack(Character attacker, Character target, float physOrMagicBaseDamage, int damageType)
+    {
+        // TODO: considerar possibilidade de critico
+        // TODO: quando os enums forem criados, trocar if por switch
+
+        // NOVA FUNCAO DE ATAQUE, NAO USAR COM O NOME NewAttack(), SUBSTITUIR Attack() com o codigo nesta funcao
+
+        // damageType deve substituir por um enum, no momento:
+        // 0 = fisico, 1 = magico
+
+        /*
+         * Funcao que aplica o dano de um ataque ao alvo, levando em conta o tipo de dano
+         * 
+         * attacker (Character): Personagem que esta atacando
+         * target (Character): Personagem que esta sendo atacado
+         * physOrMagicBaseDamage (float): Dano base do ataque, que pode ser calculado por 
+         *          AttributeCalculation.AttackCalculation() ou AttributeCalculation.MagicCalculation()
+         * damageType (int): tipo do dano, substitituir por um enum no futuro
+         * 
+         * return (int, int): [0] = dano causado (negativo se absorvido), [1] = alvo do dano (0 = personagem atacando, 1 = personagem atacado)
+         */
+
+        // Trocar por enum[] e pegar de Character.typeCharacteristics
+        // enum[damageType] retorna como o personagem reage a um tipo de dano
+        // por enquanto 0 = normal, 1 = resiste, 2 = repel, 3 = absorb
+        int[] attackerTypeCharacteristics = { 0, 0 };
+        int[] targetTypeCharacteristics = { 0, 0 };
+
+        int attackerDefense = attacker.BaseDefense;
+        int targetDefense = target.BaseDefense;
+
+        float damage;
+        int damageInteger;
+
+        if (targetTypeCharacteristics[damageType] == 2) // alvo repele o dano
+        {
+            damage = AttributeCalculation.DamageCalculation(
+                physOrMagicBaseDamage,
+                attackerDefense,
+                0.1f
+            );
+
+            if (attackerTypeCharacteristics[damageType] == 2) // atacante repele o dano
+            {
+                // Ambos repelem, dano = 0
+                Debug.Log("Repelencia mutua");
+                return (0, 0);
+            }
+            else if (attackerTypeCharacteristics[damageType] == 3) // atacante absorve o dano
+            {
+                Debug.Log("Alvo repeliu e atacante absorveu");
+                // funcao de curar deve ser chamada aqui
+                return (-damage, 0);
+            }
+
+            if(attackerTypeCharacteristics[damageType] == 1) // atacante resiste
+            {
+                Debug.Log("Alvo repeliu e atacante resiste");
+                damage /= 2;
+            }
+
+            damageInteger = (int)MathF.Ceiling(damage);
+
+            // atacante normal ou resiste
+            Debug.Log("Alvo repeliu, atacante normal ou resiste");
+            attacker.ReceiveDamage(damageInteger);
+            return (damage, 0);
+        }
+        else if (targetTypeCharacteristics[damageType] == 3) // alvo absorve o dano
+        {
+            damage = -1 * AttributeCalculation.DamageCalculation(
+                physOrMagicBaseDamage,
+                targetDefense,
+                0.1f
+            );
+
+            damageInteger = (int)MathF.Ceiling(damage);
+
+            Debug.Log("Alvo absorveu o dano");
+            // funcao de curar deve ser chamada aqui
+            return (-damageInteger, 1);
+        }
+
+        // Alvo normal ou resiste
+        damage = AttributeCalculation.DamageCalculation(
+            physOrMagicBaseDamage,
+            targetDefense,
+            0.1f
+        );
+
+        if (targetTypeCharacteristics[damageType] == 1) // alvo resiste
+        {
+            Debug.Log("Alvo resiste ao dano");
+            damage /= 2;
+        }
+
+        Debug.Log("Alvo normal ou resiste, dano aplicado");
+
+        damageInteger = (int)MathF.Ceiling(damage);
+
+        target.ReceiveDamage(damageInteger);
+
+        return (damage, 1);
+    }
     
     #region ActionDeclaration
         private Dictionary<Character,CombatAction.CombatAction> characterActions = 
