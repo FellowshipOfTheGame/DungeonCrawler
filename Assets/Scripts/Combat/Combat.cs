@@ -96,10 +96,12 @@ public class Combat : MonoBehaviour
         return damageDealt;
     }
 
-    public (float, int) NewAttack(Character attacker, Character target, float physOrMagicBaseDamage, int damageType)
+    public (float, int) NewAttack(Character attacker, Character target, float physOrMagicBaseDamage, float attackerDefense, float targetDefense, int damageType)
     {
         // TODO: considerar possibilidade de critico
         // TODO: quando os enums forem criados, trocar if por switch
+        // TODO: considerar volnerabilidade
+        // obs: mudar Character.BaseDefense para outro nome para nao confundir
 
         // NOVA FUNCAO DE ATAQUE, NAO USAR COM O NOME NewAttack(), SUBSTITUIR Attack() com o codigo nesta funcao
 
@@ -122,10 +124,9 @@ public class Combat : MonoBehaviour
         // enum[damageType] retorna como o personagem reage a um tipo de dano
         // por enquanto 0 = normal, 1 = resiste, 2 = repel, 3 = absorb
         int[] attackerTypeCharacteristics = { 0, 0 };
-        int[] targetTypeCharacteristics = { 0, 0 };
+        int[] targetTypeCharacteristics = { 3, 0 };
 
-        int attackerDefense = attacker.BaseDefense;
-        int targetDefense = target.BaseDefense;
+       
 
         float damage;
         int damageInteger;
@@ -166,17 +167,17 @@ public class Combat : MonoBehaviour
         }
         else if (targetTypeCharacteristics[damageType] == 3) // alvo absorve o dano
         {
-            damage = -1 * AttributeCalculation.DamageCalculation(
+            damage = AttributeCalculation.DamageCalculation(
                 physOrMagicBaseDamage,
                 targetDefense,
                 0.1f
             );
 
-            damageInteger = (int)MathF.Ceiling(damage);
+            damageInteger = -1 * (int)MathF.Ceiling(damage);
 
             Debug.Log("Alvo absorveu o dano");
             // funcao de curar deve ser chamada aqui
-            return (-damageInteger, 1);
+            return (-damage, 1);
         }
 
         // Alvo normal ou resiste

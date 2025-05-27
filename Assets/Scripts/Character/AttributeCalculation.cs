@@ -18,11 +18,11 @@ public static class AttributeCalculation
         return attack;
     }
 
-    public static float DefenseCalculation(int constitution, float armorDefense, float addOrSub = 0, float multiplier = 1)
+    public static float DefenceCalculation(int constitution, float armorDefence, float addOrSub = 0, float multiplier = 1)
     {
         // Def = (Con + DefArmadura + Add/Sub) * Mult       ( Add/Sub e Mult opcionais )
 
-        float defense = (constitution + armorDefense + addOrSub) * multiplier;
+        float defense = (constitution + armorDefence + addOrSub) * multiplier;
         return defense;
     }
 
@@ -66,7 +66,7 @@ public static class AttributeCalculation
         return sanity;
     }
 
-    public static float DamageCalculation(float attack, float targetDefense, float deviation = 0)
+    public static float DamageCalculation(float attack, float targetDefence, float deviation = 0)
     {
         // OBS: A forma que as afinidades sao usadas nao esta nesta funcao
         // A funcao que define as afinidades deve ter acesso aos personagens
@@ -85,7 +85,7 @@ public static class AttributeCalculation
 
         // Como serao calculados os criticos??
 
-        float damage = (attack - targetDefense) * Random.Range(1 - deviation, 1 + deviation);
+        float damage = (attack - targetDefence) * Random.Range(1 - deviation, 1 + deviation);
 
         if (damage < 0)
             damage = 0;
