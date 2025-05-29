@@ -96,7 +96,7 @@ public class Combat : MonoBehaviour
         return damageDealt;
     }
 
-    public (float, int) NewAttack(Character attacker, Character target, float physOrMagicBaseDamage, float attackerDefense, float targetDefense, int damageType)
+    public (float, int) NewAttack(Character attacker, Character target, float physOrMagicBaseDamage, float critChance, float attackerDefense, float targetDefense, int damageType)
     {
         // TODO: considerar possibilidade de critico
         // TODO: quando os enums forem criados, trocar if por switch
@@ -109,7 +109,8 @@ public class Combat : MonoBehaviour
         // 0 = fisico, 1 = magico
 
         /*
-         * Funcao que aplica o dano de um ataque ao alvo, levando em conta o tipo de dano
+         * Funcao que aplica o dano de um ataque ao alvo, levando em conta o tipo de dano. Criticos sao aplicados apenas quando o alvo 
+         * nao tem resistencias ou resiste o dano
          * 
          * attacker (Character): Personagem que esta atacando
          * target (Character): Personagem que esta sendo atacado
@@ -123,8 +124,11 @@ public class Combat : MonoBehaviour
         // Trocar por enum[] e pegar de Character.typeCharacteristics
         // enum[damageType] retorna como o personagem reage a um tipo de dano
         // por enquanto 0 = normal, 1 = resiste, 2 = repel, 3 = absorb
+        const float DAMAGE_DEVIATION = 0.1f; // 10% de desvio no dano
+        const float CRIT_MULTIPLIER = 2f; // Dano critico multiplica dano por 2
+
         int[] attackerTypeCharacteristics = { 0, 0 };
-        int[] targetTypeCharacteristics = { 3, 0 };
+        int[] targetTypeCharacteristics = { 0, 0 };
 
        
 
@@ -136,7 +140,7 @@ public class Combat : MonoBehaviour
             damage = AttributeCalculation.DamageCalculation(
                 physOrMagicBaseDamage,
                 attackerDefense,
-                0.1f
+                DAMAGE_DEVIATION
             );
 
             if (attackerTypeCharacteristics[damageType] == 2) // atacante repele o dano
@@ -170,7 +174,7 @@ public class Combat : MonoBehaviour
             damage = AttributeCalculation.DamageCalculation(
                 physOrMagicBaseDamage,
                 targetDefense,
-                0.1f
+                DAMAGE_DEVIATION
             );
 
             damageInteger = -1 * (int)MathF.Ceiling(damage);
@@ -184,7 +188,7 @@ public class Combat : MonoBehaviour
         damage = AttributeCalculation.DamageCalculation(
             physOrMagicBaseDamage,
             targetDefense,
-            0.1f
+            DAMAGE_DEVIATION
         );
 
         if (targetTypeCharacteristics[damageType] == 1) // alvo resiste
@@ -194,6 +198,14 @@ public class Combat : MonoBehaviour
         }
 
         Debug.Log("Alvo normal ou resiste, dano aplicado");
+
+        float critRoll = UnityEngine.Random.Range(0f, 1f);
+
+        if (critRoll < critChance) // critico
+        {
+            Debug.Log("Critico!");
+            damage *= CRIT_MULTIPLIER;
+        }
 
         damageInteger = (int)MathF.Ceiling(damage);
 

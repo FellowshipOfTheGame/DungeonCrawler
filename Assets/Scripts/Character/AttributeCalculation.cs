@@ -58,6 +58,21 @@ public static class AttributeCalculation
         return hitChance;
     }
 
+    public static float CritChanceCalculation(int luckChar)
+    {
+        // Critico = (LuckChar / 100) + 0.05f
+        // Funcao sigmoidal: 100/(1 + exp(-k * (luckChar - FIFTY_FIFTY_LUCK)))
+        // FIFTY_FIFTY_LUCK eh o ponto em que a chance de critico eh 50%
+
+        const float FIFTY_FIFTY_LUCK = 50f;
+
+        float k = -Mathf.Log(99f) / (1f - FIFTY_FIFTY_LUCK);
+
+        float critRoll = 100f / (1f + Mathf.Exp(-k * (luckChar - FIFTY_FIFTY_LUCK)));
+
+        return critRoll / 100;
+    }
+
     public static int SanityCalculation(int intelligence, int constitution)
     {
         // San = (Int + Vit) * 5

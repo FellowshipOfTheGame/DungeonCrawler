@@ -37,6 +37,7 @@ public class Test : MonoBehaviour
         float hitChance = AttributeCalculation.HitChanceCalculation(dexChar, dexEnemy); // 0.95
         int sanity = AttributeCalculation.SanityCalculation(intChar, conChar); // 400
         float damage = AttributeCalculation.DamageCalculation(attack, enemyDefence, 0.1f); // [60.21, 73.59]
+        float critChance = AttributeCalculation.CritChanceCalculation(50); 
 
         print("Ataque: " +  attack);
         print("Defesa Inimigo: " + enemyDefence);
@@ -46,10 +47,11 @@ public class Test : MonoBehaviour
         print("Chance de Acerto: " + hitChance);
         print("Sanidade: " + sanity);
         print("Dano: " + damage);
+        print("Chance de Critico: " + critChance);
 
         Combat combat = Combat.GetInstance();
 
-        (float, int) attackResult = combat.NewAttack(attacker, defender, attack, attackerDefence, enemyDefence, 0); // 0 = fisico
+        (float, int) attackResult = combat.NewAttack(attacker, defender, attack, critChance, attackerDefence, enemyDefence, 0); // 0 = fisico
         float damageDealt = attackResult.Item1;
         int target = attackResult.Item2;
 
