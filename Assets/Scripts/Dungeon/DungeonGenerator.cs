@@ -56,7 +56,8 @@ public class DungeonGenerator : MonoBehaviour
 
             LoadDungeon("Assets/Scripts/Dungeon/dungeon2.dat");
 
-            /* dungeon[0, 0].HasFloor = true;
+            
+            /*dungeon[0, 0].HasFloor = true;
             dungeon[0, 0].WallNorth = true;
             dungeon[0, 0].WallWest = true;
             dungeon[0, 0].WallSouth = true;
@@ -72,14 +73,16 @@ public class DungeonGenerator : MonoBehaviour
             dungeon[2, 2].HasSpecialFeature = true;
             dungeon[2, 2].SpecialFeature = DungeonCell.SpecialFeatureType.Trap;
             dungeon[2, 2].SpecialFeatureValue = 10;
-            dungeon[2, 1].SpecialFeatureValue = 100; 
+            dungeon[2, 1].SpecialFeatureValue = 100;
+            dungeon[2, 0].SpecialFeature = DungeonCell.SpecialFeatureType.StairDown;
+            dungeon[2, 0].HasSpecialFeature = true;
+            dungeon[2, 0].specialFeatureRotation = DungeonCell.SpecialFeatureRotation.South;
+            dungeon[2, 0].HasFloor = true;
+            dungeon[2, 0].SpecialFeatureValue = 0;*/
 
-            SaveDungeon("Assets/Scripts/Dungeon/dungeon.dat"); */
+            //SaveDungeon("Assets/Scripts/Dungeon/dungeon2.dat");
 
-            dungeon[1, 0].SpecialFeature = DungeonCell.SpecialFeatureType.StairDown;
-            dungeon[1, 0].HasSpecialFeature = true;
-            dungeon[1, 0].HasFloor = true;
-            dungeon[1, 0].SpecialFeatureValue = 0;
+
         }
     }
 
@@ -161,7 +164,23 @@ public class DungeonGenerator : MonoBehaviour
         // Check which walls are present and rotate based on the side with no wall
         DungeonCell cell = dungeon[x, y];
 
-        if (!cell.WallNorth)
+        switch(cell.specialFeatureRotation)
+        {
+            case DungeonCell.SpecialFeatureRotation.North:
+                rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case DungeonCell.SpecialFeatureRotation.South:
+                rotation = Quaternion.Euler(0, 180, 0);
+                break;
+            case DungeonCell.SpecialFeatureRotation.East:
+                rotation = Quaternion.Euler(0, 90, 0);
+                break;
+            case DungeonCell.SpecialFeatureRotation.West:
+                rotation = Quaternion.Euler(0, 270, 0);
+                break;
+        }
+
+        /*if (!cell.WallNorth)
         {
             // Rotate to face North
             rotation = Quaternion.Euler(0, 0, 0);
@@ -180,21 +199,21 @@ public class DungeonGenerator : MonoBehaviour
         {
             // Rotate to face West
             rotation = Quaternion.Euler(0, -90, 0);
-        }
+        }*/
 
         // Instantiate the feature with the correct rotation
-        switch (dungeon[x, y].SpecialFeature)
+        switch (cell.SpecialFeature)
         {
             case DungeonCell.SpecialFeatureType.Treasure:
                 Instantiate(treasurePrefab, position, rotation, generatedDungeonCell.transform);
                 Treasure treasureComponent = treasurePrefab.GetComponent<Treasure>();
-                treasureComponent.SetValue(dungeon[x, y].SpecialFeatureValue);
+                treasureComponent.SetValue(cell.SpecialFeatureValue);
                 treasureComponent.treasureType = Treasure.TreasureType.Money;
                 break;
             case DungeonCell.SpecialFeatureType.Trap:
                 Instantiate(trapPrefab, position, rotation, generatedDungeonCell.transform);
                 Trap trapComponent = trapPrefab.GetComponent<Trap>();
-                trapComponent.SetValue(dungeon[x, y].SpecialFeatureValue);
+                trapComponent.SetValue(cell.SpecialFeatureValue);
                 trapComponent.trapType = Trap.TrapType.Damage;
                 break;
             case DungeonCell.SpecialFeatureType.StairUp:
