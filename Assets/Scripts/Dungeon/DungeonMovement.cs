@@ -26,6 +26,7 @@ public class DungeonMovement : MonoBehaviour
 
     private bool canMove = false;
 
+    [SerializeField] private GameObject combatScreen;
     [SerializeField] private float randomEncounterMaximumChance = 0.2f;
     [SerializeField] private float minStepsToEncounter = 5;
     [SerializeField] private float maxStepsToEncounter = 20;
@@ -52,6 +53,7 @@ public class DungeonMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (combatScreen.activeSelf) return;
         CheckForSpecialFeature();
         CheckForRandomEncounters();
         Movement();
@@ -170,7 +172,9 @@ public class DungeonMovement : MonoBehaviour
         {
             print("Random encounter!");
             currentSteps = 0;
-            SceneManager.LoadScene("Combat");
+            combatScreen.SetActive(true);
+            //SceneManager.LoadScene("Combat");
+
             // Start encounter
         }
     }
