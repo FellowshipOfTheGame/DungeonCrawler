@@ -68,8 +68,6 @@ public class Combat : MonoBehaviour
             (() => 
                 heroes.Count(c => c.IsAlive) > characterActions.Count()
             );
-           
-            
             
             //ENEMIES ATTACK AT RANDOM
             EnemyCombatAI.Foo(this);
