@@ -283,7 +283,7 @@ MonoBehaviour:
   dungeonParent: {fileID: 429146979}
   treasurePrefab: {fileID: 2086185410139436414, guid: a42a01be34db96a4287ead99a7f189ae, type: 3}
   trapPrefab: {fileID: 2086185410139436414, guid: ed6e72db83af49a7ba933db4022c937d, type: 3}
-  stairDownPrefab: {fileID: 7980107322030030359, guid: 70d56d029bb397b4a993d39d9af77248, type: 3}
+  stairDownPrefab: {fileID: 1965058863557439227, guid: d499e0eee5f1cbd47aa5a24a52c5d2e9, type: 3}
 --- !u!4 &873497837
 Transform:
   m_ObjectHideFlags: 0
