@@ -12,9 +12,12 @@ namespace CombatAction
         {
             foreach (var e in combat.enemies)
             {
+                if (e.IsAlive)
+                {
                     Character target = combat.heroes[Random.Range(0,combat.heroes.Count)];    
                     int dmg = combat.Attack(e, target);
                     Debug.Log($"{e.GetClassName()} attacks {target.characterName}! {dmg} dmg");
+                }
             }
         }
     }

@@ -19,7 +19,8 @@ public class Combat : MonoBehaviour
     [SerializeField] private GameObject enemyRoot;
     
     [SerializeField] private EnemyLayoutLoader enemyLayoutLoader;
-    
+    public GameObject MorreuScreen;
+    private List<GameObject> enemyObjs = new List<GameObject>();
     //TODO complete
     public void LoadEncounter(Encounter encounter)
     {
@@ -43,6 +44,7 @@ public class Combat : MonoBehaviour
             enemyObject.transform.position = enemyLayoutLoader.GetPosition(encounterPosition.Position);
             
             var enemyScript = enemyObject.AddComponent<Enemy>();
+            enemyObjs.Add(enemyObject);
             enemyScript.Init(enemy);
         }
     } 
@@ -63,17 +65,47 @@ public class Combat : MonoBehaviour
     private IEnumerator TurnCoroutine(){
         while (true) // Set ExitCondition
         {
+            if (heroes.Count(c => c.IsAlive) == 0) break;
             //Wait for all Heroes to take action
             yield return new WaitWhile
             (() => 
                 heroes.Count(c => c.IsAlive) > characterActions.Count()
             );
             
+            for(int i = 0; i < enemyObjs.Count;)
+            {
+                var e = enemyObjs[i];
+                var enemy = e.GetComponent<Enemy>();
+                if (!enemy.character.IsAlive)
+                {
+                    enemies.Remove(enemy.character);
+                    enemyObjs.Remove(e);
+                    Destroy(e);
+                }
+                else
+                {
+                    i++;
+                }
+            }
+            
+            
             //ENEMIES ATTACK AT RANDOM
+            
             EnemyCombatAI.Foo(this);
             
             ExecuteActions();
         }
+        
+        if (heroes.Count(c => c.IsAlive) == 0)
+        {
+            Debug.Log("CombatEnd");
+            MorreuScreen.SetActive(true);
+        }
+    }
+
+    public void CloseGame()
+    {
+        Application.Quit();
     }
 
     public static Combat GetInstance()
@@ -279,4 +311,5 @@ public class Combat : MonoBehaviour
             Debug.Log($"{defender.characterName} will defend!");
         }
         #endregion
+        
 }

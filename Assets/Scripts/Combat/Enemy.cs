@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    private Character character;
+    public Character character;
 
     public void Init(Character enemyCharacter)
     {

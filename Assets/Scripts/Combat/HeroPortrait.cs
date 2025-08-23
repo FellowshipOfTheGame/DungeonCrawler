@@ -43,5 +43,10 @@ public class HeroPortrait : MonoBehaviour
         
         shieldIcon.SetActive(character.IsDefending);
         actionIndicator.SetActive(character.IsActionAssigned);
+
+        if (!character.IsAlive)
+        {
+            GetComponent<Button>().interactable = false;
+        }
     }
 }
