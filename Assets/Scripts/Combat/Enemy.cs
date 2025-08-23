@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
         //Image Setup
         var image = gameObject.AddComponent<Image>();
         image.sprite = character.characterClass.Portraits[0];
-
+        gameObject.transform.localScale = 0.8f*Vector3.one;
         character.Initialize();
     }
 }
