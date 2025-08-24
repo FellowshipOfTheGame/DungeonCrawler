@@ -5466,6 +5466,7 @@ MonoBehaviour:
   save: {fileID: 819185257}
   heroes: []
   enemies: []
+  canvasCombate: {fileID: 2023597317}
   heroPortraits:
   - {fileID: 1771390366}
   - {fileID: 768587930}

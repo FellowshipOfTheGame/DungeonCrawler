@@ -14,6 +14,8 @@ public class Combat : MonoBehaviour
     
     public List<Character> heroes;
     public List<Character> enemies;
+
+    [SerializeField] private GameObject canvasCombate;
     
     [SerializeField] private List<HeroPortrait> heroPortraits;
     [SerializeField] private GameObject enemyRoot;
@@ -21,6 +23,8 @@ public class Combat : MonoBehaviour
     [SerializeField] private EnemyLayoutLoader enemyLayoutLoader;
     public GameObject MorreuScreen;
     private List<GameObject> enemyObjs = new List<GameObject>();
+
+    private bool inCombat = false; // meio inutil
     //TODO complete
     public void LoadEncounter(Encounter encounter)
     {
@@ -47,25 +51,31 @@ public class Combat : MonoBehaviour
             enemyObjs.Add(enemyObject);
             enemyScript.Init(enemy);
         }
+
+        inCombat = true;
+        StartCoroutine(TurnCoroutine());
     } 
     
     
     public void Awake()
     {
         _instance = this;
-        
-        heroes = save.GetHeroes();
-        
-        for (int i = 0; i < heroes.Count; i++)
-            heroPortraits[i].Setup(heroes[i]);
-
-        StartCoroutine(TurnCoroutine());
     }
     
     private IEnumerator TurnCoroutine(){
+        heroes = save.GetHeroes();
+
+        for (int i = 0; i < heroes.Count; i++)
+            heroPortraits[i].Setup(heroes[i]);
+
         while (true) // Set ExitCondition
         {
-            if (heroes.Count(c => c.IsAlive) == 0) break;
+            if (inCombat)
+            {
+                if (heroes.Count(c => c.IsAlive) == 0) break;
+                if (enemyObjs.Count == 0) break ;
+            }
+            
             //Wait for all Heroes to take action
             yield return new WaitWhile
             (() => 
@@ -95,11 +105,17 @@ public class Combat : MonoBehaviour
             
             ExecuteActions();
         }
+
+        inCombat = false;
         
         if (heroes.Count(c => c.IsAlive) == 0)
         {
             Debug.Log("CombatEnd");
             MorreuScreen.SetActive(true);
+        }
+        else
+        {
+            canvasCombate.SetActive(false);
         }
     }
 

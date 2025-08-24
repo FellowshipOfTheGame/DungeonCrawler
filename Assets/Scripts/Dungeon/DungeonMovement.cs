@@ -53,6 +53,8 @@ public class DungeonMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // PERSONAGEM VAI PRA FRENTE NO FIM DO COMBATE ISSO NAO DEVIA ACONTECER
+        // TODO: ARRUMAR
         if (combatScreen.activeSelf) return;
         CheckForSpecialFeature();
         CheckForRandomEncounters();
