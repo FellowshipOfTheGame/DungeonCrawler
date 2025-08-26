@@ -54,9 +54,115 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
 
-            LoadDungeon("Assets/Scripts/Dungeon/dungeon2.dat");
+            LoadDungeon("Assets/Scripts/Dungeon/prototype_dungeon.dat");
 
-            
+            /*dungeon[0, 0].HasFloor = true;
+            dungeon[0, 1].HasFloor = true;
+            dungeon[0, 2].HasFloor = true;
+            dungeon[0, 3].HasFloor = true;
+            dungeon[0, 4].HasFloor = true;
+            dungeon[1, 3].HasFloor = true;
+            dungeon[1, 4].HasFloor = true;
+            dungeon[1, 5].HasFloor = true;
+            dungeon[1, 6].HasFloor = true;
+            dungeon[2, 3].HasFloor = true;
+            dungeon[2, 6].HasFloor = true;
+            dungeon[2, 8].HasFloor = true;
+            dungeon[3, 3].HasFloor = true;
+            dungeon[3, 6].HasFloor = true;
+            dungeon[3, 7].HasFloor = true;
+            dungeon[3, 8].HasFloor = true;
+            dungeon[4, 3].HasFloor = true;
+            dungeon[5, 3].HasFloor = true;
+            dungeon[5, 4].HasFloor = true;
+            dungeon[5, 5].HasFloor = true;
+            dungeon[5, 6].HasFloor = true;
+            dungeon[5, 7].HasFloor = true;
+            dungeon[5, 8].HasFloor = true;
+
+
+            dungeon[0, 0].WallSouth = true;
+            dungeon[0, 0].WallWest = true;
+            dungeon[0, 0].WallEast = true;
+
+            dungeon[0, 1].WallWest = true;
+            dungeon[0, 1].WallEast = true;
+
+            dungeon[0, 2].WallWest = true;
+            dungeon[0, 2].WallEast = true;
+
+            dungeon[0, 3].WallWest = true;
+
+            dungeon[0, 4].WallWest = true;
+            dungeon[0, 4].WallNorth = true;
+
+            dungeon[1, 3].WallSouth = true;
+
+            dungeon[1, 4].WallEast = true;
+
+            dungeon[1, 5].WallWest = true;
+            dungeon[1, 5].WallEast = true;
+
+            dungeon[1, 6].WallWest = true;
+            dungeon[1, 6].WallNorth = true;
+
+            dungeon[2, 3].WallSouth = true;
+            dungeon[2, 3].WallNorth = true;
+
+            dungeon[2, 6].WallSouth = true;
+            dungeon[2, 6].WallNorth = true;
+
+            dungeon[2, 8].WallSouth = true;
+            dungeon[2, 8].WallWest = true;
+            dungeon[2, 8].WallNorth = true;
+
+            dungeon[3, 3].WallSouth = true;
+            dungeon[3, 3].WallNorth = true;
+
+            dungeon[3, 6].WallSouth = true;
+            dungeon[3, 6].WallEast = true;
+
+            dungeon[3, 7].WallEast = true;
+            dungeon[3, 7].WallWest = true;
+
+            dungeon[3, 8].WallEast = true;
+            dungeon[3, 8].WallNorth = true;
+
+            dungeon[4, 3].WallSouth = true;
+            dungeon[4, 3].WallNorth = true;
+
+            dungeon[5, 3].WallSouth = true;
+            dungeon[5, 3].WallEast = true;
+
+            dungeon[5, 4].WallEast = true;
+            dungeon[5, 4].WallWest = true;
+
+            dungeon[5, 5].WallEast = true;
+            dungeon[5, 5].WallWest = true;
+
+            dungeon[5, 6].WallEast = true;
+            dungeon[5, 6].WallWest = true;
+
+            dungeon[5, 7].WallEast = true;
+            dungeon[5, 7].WallWest = true;
+
+            dungeon[5, 8].WallEast = true;
+            dungeon[5, 8].WallNorth = true;
+            dungeon[5, 8].WallWest = true;
+
+
+            dungeon[2, 8].HasSpecialFeature = true;
+            dungeon[2, 8].SpecialFeature = DungeonCell.SpecialFeatureType.Treasure;
+            dungeon[2, 8].specialFeatureRotation = DungeonCell.SpecialFeatureRotation.East;
+            dungeon[2, 8].SpecialFeatureValue = 150;
+
+            dungeon[5, 8].HasSpecialFeature = true;
+            dungeon[5, 8].SpecialFeature = DungeonCell.SpecialFeatureType.StairDown;
+            dungeon[5, 8].specialFeatureRotation = DungeonCell.SpecialFeatureRotation.South;
+            dungeon[5, 8].SpecialFeatureValue = 0;
+
+            SaveDungeon("Assets/Scripts/Dungeon/prototype_dungeon.dat");*/
+
             /*dungeon[0, 0].HasFloor = true;
             dungeon[0, 0].WallNorth = true;
             dungeon[0, 0].WallWest = true;
