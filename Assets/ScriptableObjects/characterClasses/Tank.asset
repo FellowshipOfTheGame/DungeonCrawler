@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   className: Tank
   classDescription: Tank you!
-  usableWeapons: -1
-  baseHealth: 100
+  baseHealth: 1000
   baseMana: 30
   baseAttribute:
     strength: 60

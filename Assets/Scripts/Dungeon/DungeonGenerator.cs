@@ -12,6 +12,8 @@ public class DungeonGenerator : MonoBehaviour
 
     private DungeonCell[,] dungeon;
 
+    private GameObject[,] generatedCells;
+
     [SerializeField] private GameObject dungeonParent;
 
     [SerializeField] private GameObject treasurePrefab;
@@ -43,6 +45,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         {
             DungeonCell[,] dungeonCells = new DungeonCell[width, height];
+            generatedCells = new GameObject[width, height];
             dungeon = dungeonCells;
 
             for (int x = 0; x < width; x++)
@@ -50,7 +53,6 @@ public class DungeonGenerator : MonoBehaviour
                 for (int y = 0; y < height; y++)
                 {
                     dungeon[x, y] = new DungeonCell();
-                    // Set walls and special features here
                 }
             }
 
@@ -159,36 +161,54 @@ public class DungeonGenerator : MonoBehaviour
             dungeon[5, 8].HasSpecialFeature = true;
             dungeon[5, 8].SpecialFeature = DungeonCell.SpecialFeatureType.StairDown;
             dungeon[5, 8].specialFeatureRotation = DungeonCell.SpecialFeatureRotation.South;
-            dungeon[5, 8].SpecialFeatureValue = 0;
+            dungeon[5, 8].SpecialFeatureValue = 4;
 
             SaveDungeon("Assets/Scripts/Dungeon/prototype_dungeon.dat");*/
 
-            /*dungeon[0, 0].HasFloor = true;
-            dungeon[0, 0].WallNorth = true;
-            dungeon[0, 0].WallWest = true;
-            dungeon[0, 0].WallSouth = true;
-            dungeon[1, 0].HasFloor = true;
-            dungeon[1, 1].HasFloor = true;
-            dungeon[2, 0].HasFloor = true;
-            dungeon[2, 1].HasFloor = true;
-            dungeon[2, 2].HasFloor = true;
-            dungeon[2, 1].HasSpecialFeature = true;
-            dungeon[2, 1].SpecialFeature = DungeonCell.SpecialFeatureType.Treasure;
-            dungeon[2, 1].SpecialFeatureValue = 100;
-            dungeon[2, 2].HasFloor = true;
-            dungeon[2, 2].HasSpecialFeature = true;
-            dungeon[2, 2].SpecialFeature = DungeonCell.SpecialFeatureType.Trap;
-            dungeon[2, 2].SpecialFeatureValue = 10;
-            dungeon[2, 1].SpecialFeatureValue = 100;
-            dungeon[2, 0].SpecialFeature = DungeonCell.SpecialFeatureType.StairDown;
-            dungeon[2, 0].HasSpecialFeature = true;
-            dungeon[2, 0].specialFeatureRotation = DungeonCell.SpecialFeatureRotation.South;
-            dungeon[2, 0].HasFloor = true;
-            dungeon[2, 0].SpecialFeatureValue = 0;*/
-
-            //SaveDungeon("Assets/Scripts/Dungeon/dungeon2.dat");
+            /*dungeon[5, 8].HasFloor = true;
+            dungeon[5, 9].HasFloor = true;
+            dungeon[6, 9].HasFloor = true;
+            dungeon[7, 9].HasFloor = true;
+            dungeon[7, 8].HasFloor = true;
+            dungeon[7, 7].HasFloor = true;
+            dungeon[7, 6].HasFloor = true;
+            dungeon[7, 5].HasFloor = true;
+            dungeon[8, 5].HasFloor = true;
+            dungeon[8, 6].HasFloor = true;
 
 
+            dungeon[5, 8].WallSouth = true;
+            dungeon[5, 8].WallWest = true;
+            dungeon[5, 8].WallEast = true;
+
+            dungeon[5, 9].WallWest = true;
+            dungeon[5, 9].WallNorth = true;
+
+            dungeon[6, 9].WallNorth = true;
+            dungeon[6, 9].WallSouth = true;
+
+            dungeon[7, 9].WallNorth = true;
+            dungeon[7, 9].WallEast = true;
+
+            dungeon[7, 8].WallEast = true;
+            dungeon[7, 8].WallWest = true;
+
+            dungeon[7, 7].WallEast = true;
+            dungeon[7, 7].WallWest = true;
+
+            dungeon[7, 6].WallWest = true;
+
+            dungeon[7, 5].WallWest = true;
+            dungeon[7, 5].WallSouth = true;
+
+            dungeon[8, 5].WallSouth = true;
+            dungeon[8, 5].WallEast = true;
+
+            dungeon[8, 6].WallEast = true;
+            dungeon[8, 6].WallNorth = true;
+
+
+            SaveDungeon("Assets/Scripts/Dungeon/prototype_dungeon_2.dat");*/
         }
     }
 
@@ -207,10 +227,10 @@ public class DungeonGenerator : MonoBehaviour
                 }
 
                 Vector3 position = new(x, 0, y); // Place at (x, 0, y)
-                GameObject generatedCell = Instantiate(floorPrefab, position, Quaternion.identity, dungeonParent.transform);
-                generatedCell.name = "Cell " + x + ", " + y;
+                generatedCells[x, y] = Instantiate(floorPrefab, position, Quaternion.identity, dungeonParent.transform);
+                generatedCells[x, y].name = "Cell " + x + ", " + y;
 
-                GenerateSpecialFeature(x, y, generatedCell);
+                GenerateSpecialFeature(x, y, generatedCells[x, y]);
             }
         }
     }
@@ -229,28 +249,28 @@ public class DungeonGenerator : MonoBehaviour
                 if (cell.WallNorth)
                 {
                     Vector3 northWallPos = basePosition + new Vector3(0, 0, 0.5f); // Adjust position
-                    Instantiate(wallPrefab, northWallPos, Quaternion.Euler(0, 0, 0));
+                    Instantiate(wallPrefab, northWallPos, Quaternion.Euler(0, 0, 0), generatedCells[x, y].transform);
                 }
 
                 // South Wall
                 if (cell.WallSouth)
                 {
                     Vector3 southWallPos = basePosition + new Vector3(0, 0, -0.5f); // Adjust position
-                    Instantiate(wallPrefab, southWallPos, Quaternion.Euler(0, 180, 0));
+                    Instantiate(wallPrefab, southWallPos, Quaternion.Euler(0, 180, 0), generatedCells[x, y].transform);
                 }
 
                 // East Wall
                 if (cell.WallEast)
                 {
                     Vector3 eastWallPos = basePosition + new Vector3(0.5f, 0, 0); // Adjust position
-                    Instantiate(wallPrefab, eastWallPos, Quaternion.Euler(0, 90, 0));
+                    Instantiate(wallPrefab, eastWallPos, Quaternion.Euler(0, 90, 0), generatedCells[x, y].transform);
                 }
 
                 // West Wall
                 if (cell.WallWest)
                 {
                     Vector3 westWallPos = basePosition + new Vector3(-0.5f, 0, 0); // Adjust position
-                    Instantiate(wallPrefab, westWallPos, Quaternion.Euler(0, -90, 0));
+                    Instantiate(wallPrefab, westWallPos, Quaternion.Euler(0, -90, 0), generatedCells[x, y].transform);
                 }
             }
         }
@@ -386,22 +406,25 @@ public class DungeonGenerator : MonoBehaviour
         BinaryFormatter formatter = new();
         FileStream fileStream = new(filePath, FileMode.Open); // Abre o arquivo
 
-        try
-        {
+        //try
+        //{
+            if(dungeon != null)
+                UnloadDungeon();
+
             dungeon = (DungeonCell[,])formatter.Deserialize(fileStream);
             Debug.Log("Dungeon loaded from " + filePath);
             // Gera o Mapa
             GenerateFloors(width, height);
             GenerateWalls(width, height);
-        }
+        /*}
         catch (System.Exception e)
         {
             Debug.LogError("Failed to load dungeon: " + e.Message);
         }
         finally
-        {
+        {*/
             fileStream.Close();
-        }
+        //}
     }
 
     public void UnloadDungeon()

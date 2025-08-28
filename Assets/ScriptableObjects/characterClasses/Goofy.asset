@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   className: Osaka
   classDescription: Does some silly things.
-  usableWeapons: -1
-  baseHealth: 40
+  baseHealth: 400
   baseMana: 50
   baseAttribute:
     strength: 20

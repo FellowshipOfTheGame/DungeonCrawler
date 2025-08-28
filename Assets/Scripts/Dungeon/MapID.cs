@@ -20,7 +20,9 @@ public class MapID
     {
         { 0, "Assets/Scripts/Dungeon/dungeon.dat" },
         { 1, "Assets/Scripts/Dungeon/dungeon2.dat" },
-        { 2, "Assets/Scripts/Dungeon/dungeon3.dat" }
+        { 2, "Assets/Scripts/Dungeon/dungeon3.dat" },
+        { 3, "Assets/Scripts/Dungeon/prototype_dungeon.dat"},
+        { 4, "Assets/Scripts/Dungeon/prototype_dungeon_2.dat" }
     };
 
     public static string GetMapPath(int id)

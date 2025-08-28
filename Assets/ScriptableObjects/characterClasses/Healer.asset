@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   className: Healer
   classDescription: Heals you!
-  usableWeapons: -1
-  baseHealth: 45
+  baseHealth: 450
   baseMana: 40
   baseAttribute:
     strength: 20

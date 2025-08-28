@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   className: Warrior
   classDescription: Hits Hard!
-  usableWeapons: 0
-  baseHealth: 80
+  baseHealth: 800
   baseMana: 20
   baseAttribute:
     strength: 80

@@ -124,8 +124,8 @@ public class DungeonMovement : MonoBehaviour
                     int id = currentCell.SpecialFeatureValue;
                     string path = MapID.GetMapPath(id);
                     // Load the map
-                    dungeonGenerator.UnloadDungeon();
                     dungeonGenerator.LoadDungeon(path);
+                    currentCell = dungeonGenerator.GetCell(currentPosX, currentPosY);
                     break;
                 case DungeonCell.SpecialFeatureType.StairUp:
                     print("Exit found!");
